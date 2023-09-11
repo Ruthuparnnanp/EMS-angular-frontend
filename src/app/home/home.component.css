@@ -1,0 +1,10 @@
+a {
+  text-decoration: none;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.hiddenClass {
+  visibility: hidden;
+}

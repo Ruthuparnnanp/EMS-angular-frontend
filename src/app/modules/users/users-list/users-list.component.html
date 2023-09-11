@@ -1,0 +1,158 @@
+<div class="d-flex border border-dark">
+  <div
+    style="width: 200px; height: 95vh"
+    class="sidebar bg-info p-3 d-flex flex-column"
+  >
+    <a routerLink="/home">Home</a>
+    <a routerLink="/users">Users</a>
+  </div>
+
+  <div class="dashboard">
+    <div id="wrapper" class="mb-4">
+      <p id="dashboard">USERS</p>
+      <button
+        routerLink="add"
+        id="addUser"
+        class="btn btn-outline-warning"
+        type="button"
+      >
+        <i class="fa-solid fa-user-plus me-2"></i>New User
+      </button>
+    </div>
+
+    <div class="d-flex m-3 align-items-center">
+      Search :
+      <input
+        [(ngModel)]="searchkey"
+        type="text"
+        placeholder="Search user by name"
+        class="d-flex form-control ms-2 w-50"
+      />
+      <!-- sort drop down -->
+
+      <div class="dropdown ms-2">
+        <button
+          class="btn sort dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Sort
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a (click)="sortById()" class="dropdown-item" style="color: teal"
+              >By ID</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" style="color: teal" (click)="sortByName()"
+              >By Name</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!--user list dropdown  -->
+
+      <div class="dropdown ms-2">
+        <button
+          class="btn sort dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Display Users
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              style="color: teal"
+              (click)="displayAllUsers()"
+              class="dropdown-item"
+              >All Users</a
+            >
+          </li>
+          <li>
+            <a
+              style="color: teal"
+              (click)="displayActiveUsers()"
+              class="dropdown-item"
+              >Active Users</a
+            >
+          </li>
+          <li>
+            <a
+              style="color: teal"
+              (click)="displayInactiveUsers()"
+              class="dropdown-item"
+              >InActive Users</a
+            >
+          </li>
+        </ul>
+      </div>
+      <button
+        (click)="generatePdf()"
+        class="btn ms-2 btn-outline-warning"
+        type="submit"
+      >
+        DOWNLOAD
+      </button>
+    </div>
+
+    <div class="table">
+      <table id="userTable" class="table shadow border">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="(allUsers | search : searchkey : 'name').length === 0">
+            <th class="fw-bolder text-danger">User doesn't exist ❌</th>
+          </tr>
+          <tr
+            *ngFor="
+              let user of allUsers
+                | search : searchkey : 'name'
+                | paginate
+                  : {
+                      itemsPerPage: 5,
+                      currentPage: page,
+                      totalItems: totalLength
+                    }
+            "
+            [hidden]="user.id === 1"
+          >
+            <th>{{ user["id"] }}</th>
+            <th>{{ user["name"] }}</th>
+            <th>{{ user["email"] }}</th>
+            <th>
+              <span [ngClass]="user.active == '1' ? 'active' : 'inactive'">{{
+                user["active"] == "1" ? "Active" : "InActive"
+              }}</span>
+            </th>
+            <th>
+              <a routerLink="edit/{{ user.id }}"
+                ><i class="fa-solid fa-pen text-success me-4 btn"></i
+              ></a>
+              <i
+                (click)="deleteuser(user.id)"
+                class="fa-solid fa-trash text-danger btn"
+              ></i>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      <!-- pagination -->
+      <div class="pagination">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </div>
+      <!--  -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="d-flex border border-dark">
+  <div
+    *ngIf="visible"
+    style="width: 200px; height: 95vh"
+    class="sidebar bg-info p-3 d-flex flex-column"
+  >
+    <a routerLink="/home">Home</a>
+    <a routerLink="/users">Users</a>
+
+    <button (click)="logout()" class="btn btn-danger mt-auto">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+    </button>
+  </div>
+
+  <div class="dashboard p-3 w-100">
+    <div class="row">
+      <div class="col-lg-8">
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: black;
+            height: 150px;
+            background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj0TbrokUY7qO9Yq07rAPpnJ_KWUcVn_tBqA&usqp=CAU);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+          "
+          class="admin-panel border rounded"
+        >
+          <h1 style="font-family: 'Orbitron', sans-serif; font-weight: 600">
+            Welcome <span>{{ adminName }}</span>
+          </h1>
+          <i
+            style="margin-top: -12px; cursor: pointer"
+            class="fa-solid fa-bars ms-3 fs-5"
+            (click)="openSidebar()"
+          ></i>
+        </div>
+        <div class="d-flex mt-1">
+          <div style="height: 400px" class="border col-lg-5 rounded">
+            <app-inline-calendar></app-inline-calendar>
+          </div>
+          <div class="col-lg-1"></div>
+          <div style="height: 400px" class="border col-lg-6 rounded">
+            <app-chart></app-chart>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div style="height: 350px" class="admin-details rounded border p-2">
+          <app-edit-admin (onUpdate)="updateAdmin($event)"></app-edit-admin>
+        </div>
+        <div
+          style="height: 200px"
+          class="random-user border rounded mt-2 p-2 align-items-center d-flex justify-content-center fs-8 text-primary"
+        >
+          <i class="fa-users fa-solid me-5">
+            Employees : <span class="ms-2">{{ totalUserCount }}</span></i
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
